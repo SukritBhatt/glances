@@ -37,7 +37,7 @@ This web app project relies on the **Node.js** environment for server side imple
 * **Dark Mode** - Once inside the app, the user can toggle between interface-wide dark and light modes.
 
 ## Screenshot
-
+<img src="https://i.ibb.co/jD7fzxv/glances-gif-1.gif" alt="GIF1"/>
 
 
 ## Setup

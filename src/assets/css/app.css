@@ -291,7 +291,7 @@ a.socialIcon:hover,
 .main{
     padding-top: 30px;
     background-color: #fff;
-    margin-bottom: 15vw;
+    margin-bottom: 15vw !important;
 }
 
 
