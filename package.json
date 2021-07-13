@@ -2,7 +2,7 @@
   "name": "glances-video-chat",
   "version": "1.0.1",
   "main": "./src/server.js",
-  "description": "A conference call implementation using WebRTC, Socket.io and Node.js.",
+  "description": "A Video conferencing web app developed using Express, WebRTC, Socket.io and Node.js.",
   "engines": {
     "node": "13.x"
   },
@@ -20,6 +20,11 @@
     "watch": "nodemon --watch \"src/\" --exec \"node ./src/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "breakthejinx",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SukritBhatt/glances.git"
+  },
+  "author": "Sukrit Bhatt",
+  "license": "MIT",
+  "homepage": "https://github.com/SukritBhatt/glances#Readme"
 }
