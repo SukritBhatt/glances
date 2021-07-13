@@ -1,6 +1,7 @@
 import h from './helpers.js';
 
 window.addEventListener( 'load', () => {
+    sessionStorage.setItem('tth','light');
     const room = h.getQString( location.href, 'room' );
     const username = sessionStorage.getItem( 'username' );
 

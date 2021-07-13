@@ -33,16 +33,18 @@ window.addEventListener( 'load', () => {
         let themeStylesheet = document.getElementById('theme');
         let e = document.getElementById('toggle-theme-icon');
         // if it's light -> go dark
-        if (themeStylesheet.href.includes('app')) {
+        if (sessionStorage.getItem('tth') === 'light'){
             themeStylesheet.href = 'assets/css/darktheme.css';
             e.classList.remove( 'fa-moon' );
             e.classList.add( 'fa-sun' );
+            sessionStorage.setItem('tth','dark');
             ttbtn.setAttribute( 'title', 'Light Mode');
         } else {
             // if it's dark -> go light
             themeStylesheet.href = 'assets/css/app.css';
             e.classList.remove( 'fa-sun' );
             e.classList.add( 'fa-moon' );
+            sessionStorage.setItem('tth','light');
             ttbtn.setAttribute( 'title', 'Dark Mode');
         }
     });
