@@ -28,22 +28,22 @@ window.addEventListener( 'load', () => {
     } );
 
     //Toggling between dark and light themes
-    const elem = document.getElementById('toggle-theme');
-    document.getElementById('toggle-theme').addEventListener('click', () => {
+    const ttbtn = document.getElementById('toggle-theme');
+    ttbtn.addEventListener('click', () => {
         let themeStylesheet = document.getElementById('theme');
         let e = document.getElementById('toggle-theme-icon');
         // if it's light -> go dark
         if (themeStylesheet.href.includes('app')) {
-            themeStylesheet.href = 'assets/css/darktheme.css'
+            themeStylesheet.href = 'assets/css/darktheme.css';
             e.classList.remove( 'fa-moon' );
             e.classList.add( 'fa-sun' );
-            elem.setAttribute( 'title', 'Light Mode');
+            ttbtn.setAttribute( 'title', 'Light Mode');
         } else {
             // if it's dark -> go light
-            themeStylesheet.href = 'assets/css/app.css'
+            themeStylesheet.href = 'assets/css/app.css';
             e.classList.remove( 'fa-sun' );
             e.classList.add( 'fa-moon' );
-            elem.setAttribute( 'title', 'Dark Mode');
+            ttbtn.setAttribute( 'title', 'Dark Mode');
         }
     });
     
