@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Glances</title>
+
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <script src='/socket.io/socket.io.js'></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link id="theme" rel='stylesheet' href='assets/css/app.css' type="text/css">
+        <script type="module" src='assets/js/rtc.js'></script>
+        <script type="module" src='assets/js/events.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/7.3.0/adapter.min.js" integrity="sha256-2qQheewaqnZlXJ3RJRghVUwD/3fD9HNqxh4C+zvgmF4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js'></script>
+        <script src='https://cdn.rawgit.com/yahoo/xss-filters/master/dist/xss-filters.js'></script>
+        <script src='assets/js/autolink.js'></script>
+    </head>
+    
+    <body>
+        <!-- Choosing Recording Stream Dialog Box -->
+        <div class="modal" id='recording-options-modal' role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Choose the recording option</h5>
+                        <button type="button" class="close" id='close-options' aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row text-center">
+                            <div class="col-md-6 mb-2">
+                                <button class="glow-on-hover btn-block btn-info" id="record-video" type="button">Record Video</button>                 
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <button class="glow-on-hover btn-block btn-info" id="record-screen" type="button">Record Screen</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-md-12 mb-2 text-center">
+                            <button class="glow-on-hover" id='closeModal'>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top NavBar -->
+        <nav class="navbar fixed-top topbar rounded-0 d-print-none">
+            <div class="text-white">
+                <a href="/" style="color: white; font-weight: 600; text-decoration: none;">
+                    <img src=".\assets\video_call_symbol_clr.png" width="25px" height="25px" alt="logo"/> GLANCES
+                </a>
+            </div>
+            <!-- Room Communication Controls & Chat Icons/Buttons -->
+            <div class="pull-right room-comm" hidden>
+                <button class="btn btn-sm rounded-0 btn-no-effect" id='toggle-video' title="Hide Video">
+                    <i class="fa fa-video text-white"></i>
+                </button>
+
+                <button class="btn btn-sm rounded-0 btn-no-effect" id='toggle-mute' title="Mute">
+                    <i class="fa fa-microphone-alt text-white"></i>
+                </button>
+
+                <button class="btn btn-sm text-white pull-right btn-no-effect" id='toggle-chat-pane'>
+                    <i class="fa fa-comment"></i> <span class="badge badge-danger very-small font-weight-lighter" id='new-chat-notification' hidden>New</span>
+                </button>
+
+                <button class="btn btn-sm rounded-0 btn-no-effect" id='share-screen' title="Share screen">
+                    <i class="fa fa-desktop text-white"></i>
+                </button>
+
+                <button class="btn btn-sm rounded-0 btn-no-effect" id='record' title="Record">
+                    <i class="fa fa-dot-circle text-white"></i>
+                </button>
+
+                <a href="/" class="btn btn-outline-danger"><i class="fa fa-sign-out-alt text-white" title="Leave"></i></a>
+            </div>
+        </nav>
+
+        <!-- Room joining dialog box for users that join directly through Room Link -->
+        <div class="modal vertically-centered fade" id="newuser" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h4 class="modal-title text-center" id="exampleModalLabel">Welcome to your Glances Meeting</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div class="form-group">
+                                <label class="control-label text-white" for="newusername">Please enter your name...</label>
+                                <input type="text" class="form-control" id="newusername" placeholder="Your Name" value=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="glow-on-hover" id='newuserenter'>Enter Room</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Room/Enter Room/Room Details Forms -->
+        <div class="container login-container">
+            <div class="row">
+                <!-- CREATE ROOM FORM -->
+                <div class="col-md-6 login-form-1" id='room-create' hidden>
+                    <h3>CREATE ROOM</h3>
+                    <div class="form-group text-center text-danger">
+                        <span class="form-text small text-danger" id='err-msg'></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="your-name" placeholder="Your Name" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="room-name" placeholder="Room Name" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <button class="glow-on-hover" id="create-room" type="button">Create Room</button>
+                    </div>
+                </div>   
+                <!-- ENTER ROOM USING CODE FORM -->
+                <div class="col-md-6 login-form-2" id='username-set' hidden>
+                    <div class="login-logo">
+                        <img src="./assets/video_call_symbol_clr.png" alt="App Symbol"/>
+                    </div>
+                    <h3>ENTER ROOM</h3>
+                    <div class="form-group text-center">
+                        <span class="form-text small text-danger" id='err-msg-username'></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id='username' placeholder="Your Name" value="" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="user-code" placeholder="Room Code" value="" />
+                    </div>
+                    <div class="form-group">
+                        <button class="glow-on-hover" id="enter-room" type="button">Enter Room</button>
+                    </div>
+                </div>
+                <!-- YOUR ROOM DETAILS & Sharing Form -->
+                <div class="col-md-6 sharing-details vertically-centered" id='link-code' hidden>
+                    <h3>YOUR ROOM DETAILS</h3>
+                    <div class='form-group'>
+                        <label class="control-label text-white" for="room-code">Room Code</label>
+                        <div class="input-group">
+                            <input type="text" id="room-code" class="form-control form-text" readonly>
+                            <button class="input-group-addon btn text-white" id="copy-code" type="button"><i class="fas fa-copy"></i></button>    
+                        </div>                      
+                    </div>
+                    <div class='form-group'>
+                        <label class="control-label text-white" for="room-created">Room Link</label>
+                        <div class="input-group">
+                            <input type="text" id="room-created" class="form-control form-text" readonly>
+                            <button class="input-group-addon btn text-white" id="copy-link" type="button"><i class="far fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <span class="form-text small text-white" id="msg-sh-det"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <ul class="social-network social-circle">
+                            <li><a class="icoFacebook" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a class="icoTwitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                            <li><a class="icoGoogle" title="Gmail"><i class="fab fa-google"></i></a></li>
+                            <li><a class="icoWhatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a></li>
+                        </ul>
+                    </div> 
+                    <div class="form-group">
+                        <button class="glow-on-hover" id="enter-my-room" type="button">Enter Your Room</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video and Chat Elements -->
+        <div class="container-fluid room-comm" hidden>
+            <div class="row">
+                <!-- Local Video -->
+                <div>
+                    <video class="local-video mirror-mode" id='local' volume='0' autoplay muted></video>
+                </div>
+                <!-- Remote Videos -->
+                <div class="col-md-12 main" id='main-section'>                    
+                    <div class="row mt-2 mb-2" id='videos'></div>
+                </div>
+                <!-- Chat Pane -->
+                <div class="col-md-3 chat-col mb-2" id='chat-pane' hidden>
+                    <div class="row">
+                        <div class="col-md-12 text-center h3 mb-3" >MEETING CHAT</div>
+                    </div>
+
+                    <div id='chat-messages'></div>
+
+                    <div class="row justify-content-center">
+                        <textarea id='chat-input' class="col-md-9 col-xs-9 col-sm-9 chat-box" placeholder="Type here... Hit enter to send"></textarea>
+                        <div class="col-md-1 col-xs-1 col-sm-1">
+                            <button class="btn btn-success" id="chat-send"><i class="fas fa-paper-plane text-white"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Toggle Switch for Dark/Light Modes -->
+        <div id='toggle-theme' class="float" role="button" hidden>
+            <i id='toggle-theme-icon' class="fas fa-moon btn-float"></i>
+        </div>
+
+        <!-- Accessibility Menu -->
+        <div class="access-menu">
+            <a class="acc" id="acc-menu-btn"><i class="fab fa-accessible-icon"></i></a>
+            <ul class="acc-menu">
+              <li><a class="acc child-btn scale-transition scale-out" id="bigfont" title="Large Font"><i class="fas fa-text-height"></i></a></li>
+              <li><a class="acc child-btn scale-transition scale-out" id="dyslexia" title="Dyslexia-friendly Font"><i class="fas fa-signature"></i></a></li>
+            </ul>
+        </div>
+
+    </body>
+</html>
