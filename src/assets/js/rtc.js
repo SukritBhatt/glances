@@ -239,6 +239,7 @@ window.addEventListener( 'load', () => {
             return new Promise( ( res, rej ) => {
                 screen.getTracks().length ? screen.getTracks().forEach( track => track.stop() ) : '';
                 res();
+                screen = '';
             } ).then( () => {
                 h.toggleShareIcons( false );
                 broadcastNewTracks( myStream, 'video' );
@@ -330,24 +331,23 @@ window.addEventListener( 'load', () => {
             }
         } );
 
-        //Video Icon Click
+        //Toggling the video icon
         document.getElementById( 'toggle-video' ).addEventListener( 'click', ( e ) => {
             e.preventDefault();
-
-            let elem = document.getElementById( 'toggle-video' );
+            let elem = document.getElementById('video-icon');
 
             if ( myStream.getVideoTracks()[0].enabled ) {
-                e.target.classList.remove( 'fa-video' );
-                e.target.classList.add( 'fa-video-slash' );
-                elem.setAttribute( 'title', 'Show Video' );
+                elem.classList.remove( 'fa-video' );
+                elem.classList.add( 'fa-video-slash' );
+                document.getElementById( 'toggle-video' ).setAttribute( 'title', 'Show Video' );
 
                 myStream.getVideoTracks()[0].enabled = false;
             }
 
             else {
-                e.target.classList.remove( 'fa-video-slash' );
-                e.target.classList.add( 'fa-video' );
-                elem.setAttribute( 'title', 'Hide Video' );
+                elem.classList.remove( 'fa-video-slash' );
+                elem.classList.add( 'fa-video' );
+                document.getElementById( 'toggle-video' ).setAttribute( 'title', 'Hide Video' );
 
                 myStream.getVideoTracks()[0].enabled = true;
             }
@@ -355,24 +355,24 @@ window.addEventListener( 'load', () => {
             broadcastNewTracks( myStream, 'video' );
         } );
 
-        //Mute icon click
+        //Toggling the mute icon
         document.getElementById( 'toggle-mute' ).addEventListener( 'click', ( e ) => {
             e.preventDefault();
 
-            let elem = document.getElementById( 'toggle-mute' );
+            let elem = document.getElementById( 'mic-icon' );
 
             if ( myStream.getAudioTracks()[0].enabled ) {
-                e.target.classList.remove( 'fa-microphone-alt' );
-                e.target.classList.add( 'fa-microphone-alt-slash' );
-                elem.setAttribute( 'title', 'Unmute' );
+                elem.classList.remove( 'fa-microphone-alt' );
+                elem.classList.add( 'fa-microphone-alt-slash' );
+                document.getElementById( 'toggle-mute' ).setAttribute( 'title', 'Unmute' );
 
                 myStream.getAudioTracks()[0].enabled = false;
             }
 
             else {
-                e.target.classList.remove( 'fa-microphone-alt-slash' );
-                e.target.classList.add( 'fa-microphone-alt' );
-                elem.setAttribute( 'title', 'Mute' );
+                elem.classList.remove( 'fa-microphone-alt-slash' );
+                elem.classList.add( 'fa-microphone-alt' );
+                document.getElementById( 'toggle-mute' ).setAttribute( 'title', 'Mute' );
 
                 myStream.getAudioTracks()[0].enabled = true;
             }

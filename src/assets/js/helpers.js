@@ -177,7 +177,7 @@ export default {
     },
 
     toggleVideoBtnDisabled( disabled ) {
-        document.getElementById( 'toggle-video' ).disabled = disabled;
+        document.getElementById('toggle-video').disabled = disabled;
     },
 
     maximiseStream( e ) {
@@ -187,15 +187,15 @@ export default {
     },
 
     singleStreamToggleMute( e ) {
-        if ( e.target.classList.contains( 'fa-microphone' ) ) {
+        if ( e.target.classList.contains( 'fa-microphone-alt' ) ) {
             e.target.parentElement.previousElementSibling.muted = true;
-            e.target.classList.add( 'fa-microphone-slash' );
-            e.target.classList.remove( 'fa-microphone' );
+            e.target.classList.remove( 'fa-microphone-alt' );
+            e.target.classList.add( 'fa-microphone-alt-slash' );
         }
         else {
             e.target.parentElement.previousElementSibling.muted = false;
-            e.target.classList.add( 'fa-microphone' );
-            e.target.classList.remove( 'fa-microphone-slash' );
+            e.target.classList.remove( 'fa-microphone-alt-slash' );
+            e.target.classList.add( 'fa-microphone-alt' ); 
         }
     },
 
