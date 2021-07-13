@@ -145,7 +145,7 @@ a.socialIcon:hover,
 	color:blue;
 	border-radius: 30px;
     justify-content: center;
-    vertical-align: center;
+    vertical-align: middle;
 	text-align: center;
 	
 }
