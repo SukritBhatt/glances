@@ -8,6 +8,7 @@ A complete working version of this web app is deployed on Heroku - https://glanc
 * [Technologies and key Dependencies](#technologies-and-key-dependencies)
 * [Features](#features)
 * [Screenshot](#screenshot)
+* [Using the Website](#using-the-website)
 * [Basic setup for local system](#setup)
 * [Notes](#notes)
 
@@ -39,6 +40,16 @@ This web app project relies on the **Node.js** environment for server-side imple
 ## Screenshot
 <img src="https://i.ibb.co/jD7fzxv/glances-gif-1.gif" alt="GIF1"/>
 
+## Using the website
+* On the landing page/home page, users have a choice to create either a new room or join an already existing room if they have its room code.
+  - If a user enters an already existing room, they will be directly taken to the meeting page.
+  - If a user creates a new room instead, a new form containing the new room details will appear.
+* On creating a new room, the **Your Room Details** form will furnish the room code and the room link that can be copied to the clipboard using the buttons provided (or manually) and shared with the other meeting participants. Facebook, Twitter, Gmail, and WhatsApp sharing icons are also present in the form, and they will directly take the user to the sharing website in a new box window with the invitation message already typed out along with the link and code. On clicking the **Enter Room** button, the user will be taken to the meeting page.
+* Users who want to join a room can either do so by using the Room Code directly on the home page, or if they have the link they will directly be taken to the meeting page with a prompt to enter their name.
+* On the meeting page, all the meeting controls can be found on the top right of the screen in the top navbar.
+* Individual users can be muted by hovering the mouse over their video feed, revealing a mute button and a fullscreen button.
+* Accessibility buttons and the toggle for the dark mode are floating buttons on the lower right corner of the website.
+* To exit the meeting, a user can either click on the rightmost button in the top navbar or click the Glances name/logo on the top-left corner.
 
 ## Setup
 * Node.js and npm must be installed on the system.
