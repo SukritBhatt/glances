@@ -1,5 +1,6 @@
 body {
-    background-color: rgba(138, 136, 136, 0.541)!important
+    background: rgb(138,136,136);
+    background: radial-gradient(circle, rgba(138,136,136,0.5) 0%, rgba(92,92,92,0.6) 100%);
 }
 .acc-1{
     font-size: 30px!important;
@@ -214,7 +215,7 @@ a.socialIcon:hover,
     top: 40.5px;
     z-index: 1000;
     position: fixed;
-    background-color: #7c7c7c;
+    background: radial-gradient(circle, rgba(138,136,136,0.5) 0%, rgba(28,28,28,0.4) 80%);
     color: silver;
     padding-right: 5px;
     padding-left: 5px;
