@@ -64,3 +64,7 @@ This web app project relies on the **Node.js** environment for server-side imple
 1. WebRTC establishes a P2P (peer-to-peer) connection between the communicating devices. Owing to this, no intermediary media server is required for communication. However, this becomes a bottleneck when it comes to scaling up the application. Due to the P2P nature, a mesh network is formed when more than 2 users connect together. With every new user, this mesh becomes more complex and dense. Hence, bandwidth limitations in practical scenarios might allow only **upto 4 users** to connect together. With better internet connections, the web app can handle **upto 8** users per room.
 
 2. This app uses the same stream and display element for handling both the remote videos and shared screens of users. This implementation allows the user to view the shared screens of multiple users simultaneously in the same slots where their videos would appear. This can allow the meeting participants to share their screens while also being able to watch the shared screens of others since no one particular shared screen is given focus or priority.
+
+3. This web project makes use of the autolink.js tool to find and hyperlink URLs within user text. This library can be found at https://github.com/bryanwoods/autolink-js developed by Bryan Woods.
+
+4. The WebRTC project at https://github.com/amirsanni/Video-Call-App-NodeJS.git was of great help to me in understanding how to manage video streams and socket connections.
